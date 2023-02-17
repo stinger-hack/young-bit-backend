@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "onboarding-backend"
+version = "0.1.0"
+description = ""
+authors = ["pavivin <pavivin@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "onboarding_backend"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.92.0"
+pydantic = {extras = ["dotenv"], version = "^1.10.5"}
+orjson = "^3.8.6"
+uvicorn = "^0.20.0"
+PyJWT = "^2.6.0"
+python-multipart = "^0.0.5"
+celery = "^5.2.7"
+asgiref = "^3.6.0"
+sqlalchemy = "^2.0.3"
+passlib = "^1.7.4"
+asyncpg = "^0.27.0"
+websockets = "^10.4"
+aiobotocore = "^2.4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+line-length = 120
+target-version = ['py310', 'py311']
+skip-string-normalisation = true

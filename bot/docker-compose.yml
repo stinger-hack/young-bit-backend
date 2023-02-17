@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  bot:
+    build: .
+    env_file:
+      - .env
+    network_mode: host
+    environment:
+      - BACKEND_HOSTNAME=${BACKEND_HOSTNAME}
+      - BACKEND_PORT=${BACKEND_PORT}
+      - BOT_TOKEN=${BOT_TOKEN}
+

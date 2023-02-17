@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "6432:6432"
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - onboarding
+  web:
+    build:
+      context: .
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - onboarding
+networks:
+  onboarding:
