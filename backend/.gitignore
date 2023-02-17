@@ -150,6 +150,5 @@ cython_debug/
 
 # SOPS decrypted files
 *.dec
-/static/
 
 .vscode
