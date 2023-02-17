@@ -31,7 +31,7 @@ async def upload_image(file: UploadFile = File(...)):
     return Response(body={"img_link": img_link})
 
 
-@router.get("/news", response_model=Response[NewsView])
+@router.get("/news", response_model=Response[list[NewsView]])
 async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_session)):
     result = await News.get_news(news_type=news_type, session=session)
     return Response(body=[NewsView.from_orm(item) for item in result])
