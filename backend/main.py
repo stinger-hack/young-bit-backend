@@ -2,11 +2,11 @@ import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
-from fastapi.staticfiles import StaticFiles
 
 import onboarding.app.auth.controllers as auth
 import onboarding.app.healthcheck.controllers as healthcheck
 import onboarding.app.news.controllers as news
+import onboarding.app.profile.controllers as profile
 import onboarding.exceptions as exceptions
 
 from onboarding.config import settings
@@ -21,10 +21,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(healthcheck.router, tags=["healthcheck"])
 app.include_router(auth.router, tags=["customers"], prefix="/api")
 app.include_router(news.router, tags=["news"], prefix="/api")
+app.include_router(profile.router, tags=["profile"], prefix="/api")
 
 
 @app.exception_handler(Exception)

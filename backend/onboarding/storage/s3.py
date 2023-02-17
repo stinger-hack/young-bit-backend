@@ -41,6 +41,10 @@ class S3Service:
         return await cls.s3_client.delete_object(Bucket=settings.BUCKET_NAME, Key=img_name)
 
     @classmethod
+    def get_img_link(cls, img_name: str):
+        return f"{settings.S3_ENDPOINT_URL}/{settings.BUCKET_NAME}/{img_name}"
+
+    @classmethod
     async def close_s3_session(cls) -> None:
         if cls.s3_client is not None:
             await cls.s3_client.close()
@@ -50,4 +54,3 @@ class S3Service:
 
 async def get_s3_client() -> aiobotocore.session.AioBaseClient:
     return await S3Service.get_s3_client()
-

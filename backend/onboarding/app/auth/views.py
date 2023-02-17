@@ -12,6 +12,9 @@ class Token(PydanticBaseModel):
 
 class TokenData(BaseModel):
     username: str
+    first_name: str
+    last_name: str
+    patronymic: str | None
     exp: datetime | None
 
 

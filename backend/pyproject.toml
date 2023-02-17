@@ -21,6 +21,8 @@ passlib = "^1.7.4"
 asyncpg = "^0.27.0"
 websockets = "^10.4"
 aiobotocore = "^2.4.2"
+bcrypt = "^4.0.1"
+cryptography = "^39.0.1"
 
 
 [build-system]

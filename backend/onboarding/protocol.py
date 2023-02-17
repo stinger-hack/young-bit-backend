@@ -30,7 +30,6 @@ class BaseModel(PydanticModel):
     class Config:
         json_loads = orjson.loads
         json_dumps = orjson_dumps
-        alias_generator = to_camel_case
         orm_mode = True
         allow_population_by_field_name = True
 

@@ -1,13 +1,21 @@
-from fastapi import APIRouter, WebSocket, UploadFile, File
+import uuid
+from fastapi import APIRouter, Depends, WebSocket, UploadFile, File
+from sqlalchemy.ext.asyncio import AsyncSession
+from onboarding.app.auth.models import Users
+from onboarding.app.news.models import News
+from onboarding.app.news.views import NewsView
+from onboarding.auth.oauth2 import get_current_user
 from onboarding.config import settings
+from onboarding.db import get_session
+from onboarding.enums import NewsTypeEnum
 from onboarding.storage.s3 import S3Service
 from onboarding.protocol import Response
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(get_current_user)])
 
 
-@router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+@router.websocket("/sos/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: int):
     await websocket.accept()
     while True:
         data = await websocket.receive_json()
@@ -18,5 +26,13 @@ async def websocket_endpoint(websocket: WebSocket):
 async def upload_image(file: UploadFile = File(...)):
     client: S3Service = await S3Service.get_s3_client()
     contents = await file.read()
-    await client.put_object(Bucket=settings.BUCKET_NAME, Key=file.filename, Body=contents)
-    return Response(message=f"file {file.filename} sucessfully upload")
+    filename = f"{uuid.uuid4().hex}.{file.filename.rsplit('.')[-1].lower()}"
+    await client.put_object(Bucket=settings.BUCKET_NAME, Key=filename, Body=contents)
+    img_link = S3Service.get_img_link(filename)
+    return Response(body={"img_link": img_link})
+
+
+@router.get("/news", response_model=Response)
+async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_session)):
+    result = await News.get_news(news_type=news_type, session=session)
+    return Response(body=[NewsView.from_orm(item) for item in result])

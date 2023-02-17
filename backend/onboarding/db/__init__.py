@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from onboarding.app.auth.models import *  # noqa
 from onboarding.app.games.models import *  # noqa
 from onboarding.app.news.models import *  # noqa
+from onboarding.app.profile import *
 
 from .base import Base, engine
 

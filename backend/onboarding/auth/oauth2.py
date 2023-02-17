@@ -11,11 +11,19 @@ from onboarding.exceptions import UnauthorizedError
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth")
 
 
-async def get_current_user(
-    token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_session)
-) -> TokenData:
-    token = decode_token(token)
-    user = await Users.get_by_username(token.username, session)
+# async def get_current_user(
+#     token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_session)
+# ) -> TokenData:
+#     token = decode_token(token)
+#     user = await Users.get_by_username(token.username, session)
+#     if not user:
+#         raise UnauthorizedError
+#     return user
+
+
+async def get_current_user(session: AsyncSession = Depends(get_session)) -> TokenData:
+    # mock user
+    user = await session.get(Users, 1)
     if not user:
         raise UnauthorizedError
     return user

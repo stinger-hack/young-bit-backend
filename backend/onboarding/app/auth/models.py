@@ -11,9 +11,12 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class Users(BaseModel):
     __tablename__ = "users"
 
-    fullname: Mapped[str] = Column(String, nullable=True)  # e.g. Кобеев А.М.
-    username: Mapped[str] = Column(String, unique=True, index=True, nullable=False)
+    first_name: Mapped[str] = Column(String, nullable=False)
+    last_name: Mapped[str] = Column(String, nullable=False)
+    patronymic: Mapped[str] = Column(String, nullable=True)
+    username: Mapped[str] = Column(String, unique=False, index=True, nullable=False)
     hashed_password: Mapped[str] = Column(String, nullable=False)
+    role: Mapped[str] = Column(String(15), nullable=False)
 
     @staticmethod
     async def get_by_username(username: str, session: AsyncSession):
@@ -22,7 +25,22 @@ class Users(BaseModel):
         return result
 
     @staticmethod
-    async def insert_data(username: str, hashed_password: str, session: AsyncSession):
-        query = insert(Users).values(username=username, hashed_password=hashed_password)
+    async def insert_data(
+        first_name: str,
+        last_name: str,
+        patronymic: str,
+        username: str,
+        hashed_password: str,
+        role: str,
+        session: AsyncSession,
+    ):
+        query = insert(Users).values(
+            first_name=first_name,
+            last_name=last_name,
+            patronymic=patronymic,
+            username=username,
+            role=role,
+            hashed_password=hashed_password,
+        )
         await session.execute(query)
         await session.commit()
