@@ -20,7 +20,15 @@ class News(BaseDatetimeModel):
     @classmethod
     async def get_news(cls, news_type: NewsTypeEnum, session: AsyncSession):
         stmt = (
-            select(cls).where(cls.news_type == news_type).order_by(cls.created_at.desc()).options(joinedload(cls.user))
+            select(cls)
+            .where(
+                and_(
+                    cls.news_type == news_type,
+                    cls.is_approved == True,
+                )
+            )
+            .order_by(cls.created_at.desc())
+            .options(joinedload(cls.user))
         )
         result = (await session.execute(stmt)).scalars()
         return result

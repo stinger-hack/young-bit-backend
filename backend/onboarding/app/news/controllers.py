@@ -49,7 +49,7 @@ async def get_likes(news_id: int, session: AsyncSession = Depends(get_session)):
     return Response(body=[LikesView.from_orm(item) for item in result])
 
 
-@router.post("admin/news/approve_news")
+@router.post("/admin/news/approve_news")
 async def approve_post(body: ApprovedNewsRequest, session: AsyncSession = Depends(get_session)):
     await News.approve_news(news_id=body.news_id, is_approved=body.is_approved, session=session)
-    return Response
+    return Response()
