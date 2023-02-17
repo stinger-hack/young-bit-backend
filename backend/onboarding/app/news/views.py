@@ -9,6 +9,7 @@ class UserPayload(BaseModel):
     patronymic: str | None
     username: str
     role: UserRoleEnum
+    img_link: str
 
 
 class NewsView(BaseModel):

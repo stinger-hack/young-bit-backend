@@ -17,6 +17,7 @@ class Users(BaseModel):
     username: Mapped[str] = Column(String, unique=False, index=True, nullable=False)
     hashed_password: Mapped[str] = Column(String, nullable=False)
     role: Mapped[str] = Column(String(15), nullable=False)
+    img_link: Mapped[str] = Column(String, nullable=True, default='https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png')
 
     @staticmethod
     async def get_by_username(username: str, session: AsyncSession):
