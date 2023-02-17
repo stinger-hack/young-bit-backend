@@ -29,3 +29,15 @@ class CommentsView(BaseModel):
     created_at: datetime | str
     updated_at: datetime | str | None
     user: UserPayload
+
+
+class LikesView(BaseModel):
+    id: int
+    created_at: datetime | str
+    updated_at: datetime | str | None
+    user: UserPayload
+
+
+class ApprovedNewsRequest(BaseModel):
+    news_id: int
+    is_approved: bool

@@ -17,12 +17,14 @@ class Users(BaseModel):
     username: Mapped[str] = Column(String, unique=False, index=True, nullable=False)
     hashed_password: Mapped[str] = Column(String, nullable=False)
     role: Mapped[str] = Column(String(15), nullable=False)
-    img_link: Mapped[str] = Column(String, nullable=True, default='https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png')
+    img_link: Mapped[str] = Column(
+        String, nullable=True, default="https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png"
+    )
 
     @staticmethod
     async def get_by_username(username: str, session: AsyncSession):
-        query = select(Users).where(Users.username == username)
-        result = (await session.execute(query)).scalars().first()
+        stmt = select(Users).where(Users.username == username)
+        result = (await session.execute(stmt)).scalars().first()
         return result
 
     @staticmethod
@@ -35,7 +37,7 @@ class Users(BaseModel):
         role: str,
         session: AsyncSession,
     ):
-        query = insert(Users).values(
+        stmt = insert(Users).values(
             first_name=first_name,
             last_name=last_name,
             patronymic=patronymic,
@@ -43,5 +45,5 @@ class Users(BaseModel):
             role=role,
             hashed_password=hashed_password,
         )
-        await session.execute(query)
+        await session.execute(stmt)
         await session.commit()

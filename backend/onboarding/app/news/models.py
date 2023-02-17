@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, select, and_
+from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, select, and_, update
 from sqlalchemy.orm import relationship, joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 from onboarding.enums import NewsTypeEnum, ActionType
@@ -15,14 +15,21 @@ class News(BaseDatetimeModel):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     user = relationship("Users")
     news_type = Column(String(10), nullable=False)  # formal or informal news
+    is_approved = Column(Boolean, nullable=True)  # None == not checked, False == not pass, True == pass
 
     @classmethod
     async def get_news(cls, news_type: NewsTypeEnum, session: AsyncSession):
-        query = (
+        stmt = (
             select(cls).where(cls.news_type == news_type).order_by(cls.created_at.desc()).options(joinedload(cls.user))
         )
-        result = (await session.execute(query)).scalars()
+        result = (await session.execute(stmt)).scalars()
         return result
+
+    @classmethod
+    async def approve_news(cls, news_id, is_approved: bool, session: AsyncSession):
+        stmt = update(cls).where(cls.id == news_id).values(is_approved=is_approved)
+        await session.execute(stmt)
+        await session.commit()
 
 
 class Action(BaseDatetimeModel):
@@ -36,7 +43,7 @@ class Action(BaseDatetimeModel):
 
     @classmethod
     async def get_actions(cls, action_type: ActionType, news_id: int, session: AsyncSession):
-        query = (
+        stmt = (
             select(cls)
             .where(
                 and_(
@@ -47,5 +54,5 @@ class Action(BaseDatetimeModel):
             .order_by(cls.created_at.desc())
             .options(joinedload(cls.user))
         )
-        result = (await session.execute(query)).scalars()
+        result = (await session.execute(stmt)).scalars()
         return result
