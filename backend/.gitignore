@@ -151,8 +151,5 @@ cython_debug/
 # SOPS decrypted files
 *.dec
 /static/
-/secret
-/secret.pub
 
 .vscode
-.id_rsa*
