@@ -1,13 +1,12 @@
 import uuid
 from fastapi import APIRouter, Depends, WebSocket, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
-from onboarding.app.auth.models import Users
-from onboarding.app.news.models import News
-from onboarding.app.news.views import NewsView
+from onboarding.app.news.models import Action, News
+from onboarding.app.news.views import NewsView, CommentsView
 from onboarding.auth.oauth2 import get_current_user
 from onboarding.config import settings
 from onboarding.db import get_session
-from onboarding.enums import NewsTypeEnum
+from onboarding.enums import ActionType, NewsTypeEnum
 from onboarding.storage.s3 import S3Service
 from onboarding.protocol import Response
 
@@ -36,3 +35,9 @@ async def upload_image(file: UploadFile = File(...)):
 async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_session)):
     result = await News.get_news(news_type=news_type, session=session)
     return Response(body=[NewsView.from_orm(item) for item in result])
+
+
+@router.get("/comments/{news_id}")
+async def get_comments(news_id: int, session: AsyncSession = Depends(get_session)):
+    result = await Action.get_actions(ActionType.COMMENT, news_id=news_id, session=session)
+    return Response(body=[CommentsView.from_orm(item) for item in result])

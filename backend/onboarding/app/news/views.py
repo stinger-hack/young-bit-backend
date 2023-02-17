@@ -12,12 +12,19 @@ class UserPayload(BaseModel):
 
 
 class NewsView(BaseModel):
+    id: int
     title: str
     news_type: NewsTypeEnum
     created_at: datetime | str
     updated_at: datetime | str | None
-    deleted_at: datetime | str | None
-    id: int
     main_text: str
     image_url: str
+    user: UserPayload
+
+
+class CommentsView(BaseModel):
+    id: int
+    content: str
+    created_at: datetime | str
+    updated_at: datetime | str | None
     user: UserPayload

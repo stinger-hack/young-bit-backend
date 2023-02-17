@@ -42,7 +42,7 @@ async def register_user(
     role: UserRoleEnum,
     first_name: str,
     last_name: str,
-    patronymic: str,
+    patronymic: str | None = None,
     session: AsyncSession = Depends(get_session),
 ):
     hashed_password = get_password_hash(password)
