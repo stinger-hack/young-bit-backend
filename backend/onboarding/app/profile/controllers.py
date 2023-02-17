@@ -9,5 +9,4 @@ router = APIRouter(dependencies=[Depends(get_current_user)])
 
 @router.post("/profile", response_model=Response)
 def get_user_profile(user: Users = Depends(get_current_user)):
-    user_data = decode_token(user)
-    return Response(body=user_data)
+    return Response(body=user)
