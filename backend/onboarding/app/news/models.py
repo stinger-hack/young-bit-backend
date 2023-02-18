@@ -12,7 +12,7 @@ class News(BaseDatetimeModel):
     title = Column(String(255), nullable=False)
     main_text = Column(String, nullable=True)
     image_url = Column(String(255), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     user = relationship("Users")
     news_type = Column(String(10), nullable=False)  # formal or informal news
     is_approved = Column(Boolean, nullable=True)  # None == not checked, False == not pass, True == pass
@@ -29,7 +29,7 @@ class News(BaseDatetimeModel):
 
     @classmethod
     async def create_initiative(
-        cls, title: str, main_text: str, image_url: str, user_id: int, session: AsyncSession
+        cls, title: str, main_text: str, image_url: str | None, user_id: int, session: AsyncSession
     ):
         await cls.insert_data(
             title=title,

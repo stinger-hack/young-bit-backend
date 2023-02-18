@@ -20,7 +20,13 @@ class NewsView(BaseModel):
     updated_at: datetime | str | None
     main_text: str
     image_url: str | None
-    user: UserPayload
+    user: UserPayload | None = UserPayload(
+        first_name="anonymous",
+        last_name="user",
+        username="anonymous",
+        role=UserRoleEnum.EMPLOYEE,
+        img_link="https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png",
+    )
 
 
 class CommentsView(BaseModel):
@@ -46,8 +52,8 @@ class ApprovedNewsRequest(BaseModel):
 class CreateInitiativeRequest(BaseModel):
     title: str
     main_text: str
-    image_url: str
-    user_id: int
+    image_url: str | None
+    user_id: int | None
 
 
 class CreateNewsRequest(CreateInitiativeRequest):
