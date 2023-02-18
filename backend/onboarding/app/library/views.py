@@ -1,3 +1,7 @@
-from datetime import datetime
 from onboarding.protocol import BaseModel
-from onboarding.enums import NewsTypeEnum, UserRoleEnum
+
+
+class CreateBookRequest(BaseModel):
+    name: str
+    category: str
+    img_link: str

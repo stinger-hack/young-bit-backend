@@ -1,21 +1,26 @@
-# import asyncio
-# import uuid
-# from fastapi import APIRouter, Depends, WebSocket, UploadFile, File, WebSocketDisconnect
-# from sqlalchemy import event
-# from sqlalchemy.ext.asyncio import AsyncSession
-# from .models import Action, ImportantUser, News
-# from .views import ApprovedNewsRequest, LikesView, NewsView, CommentsView
-# from onboarding.auth.oauth2 import get_current_user
-# from onboarding.config import settings
-# from onboarding.db import get_session
-# from onboarding.enums import ActionType, NewsTypeEnum
-# from onboarding.storage.s3 import S3Service
-# from onboarding.protocol import Response
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from onboarding.app.auth.models import Users
+from onboarding.app.library.views import CreateBookRequest
+from onboarding.auth.oauth2 import get_current_user
+from onboarding.db import get_session
+from onboarding.protocol import Response
 
-# router = APIRouter(dependencies=[Depends(get_current_user)])
+from .models import UserBook, Book
+
+router = APIRouter(dependencies=[Depends(get_current_user)])
+
+@router.get("/library")
+async def get_user_library(user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    result = await UserBook.get_book_by_user_id(user_id=user.id, session=session)
+    group_category = {}
+    for item in result:
+        group_category[item.book.category] = group_category.get(item.book.category, [])
+        group_category[item.book.category].append(item.book)
+    return Response(body=group_category)
 
 
-# @router.post("/admin/news/approve_news")
-# async def approve_post(body: ApprovedNewsRequest, session: AsyncSession = Depends(get_session)):
-#     await News.approve_news(news_id=body.news_id, is_approved=body.is_approved, session=session)
-#     return Response()
+@router.post("/admin/library")
+async def create_book(body: CreateBookRequest, session: AsyncSession = Depends(get_session)):
+    await Book.insert_data(name=body.name, category=body.category, img_link=body.img_link, session=session)
+    return Response()
