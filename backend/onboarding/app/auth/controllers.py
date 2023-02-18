@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from onboarding.protocol import Response
 
-from .views import Token, TokenData
+from .views import Token, TokenData, UserPayload
 from onboarding.auth.hash import get_password_hash, verify_password  # isort:skip
 from onboarding.auth.jwt_token import create_access_token  # isort:skip
 from onboarding.db import get_session  # isort:skip
@@ -60,15 +60,39 @@ async def register_user(
 
 @router.get("/employees")
 async def get_employees(session: AsyncSession = Depends(get_session)):
-    Users
+    result = await Users.get_all(session=session)
+    return Response(
+        body=[
+            UserPayload(
+                username=item.username,
+                first_name=item.first_name,
+                last_name=item.last_name,
+                patronymic=item.patronymic,
+                cards=Users.card_map[i],
+            )
+            for i, item in enumerate(result)
+        ]
+    )
 
 
 @router.get("/departments")
 async def get_departments(session: AsyncSession = Depends(get_session)):
-    Department
+    result = await Department.get_all(session=session)
+    return Response(body=list(result))
 
 
 @router.get("/users/{department_id}")
 async def get_department_users(department_id: int, session: AsyncSession = Depends(get_session)):
-    result = Users.get_by_department_id(department_id=department_id, session=session)
-    return Response
+    result = await Users.get_by_department_id(department_id=department_id, session=session)
+    return Response(
+        body=[
+            UserPayload(
+                username=item.username,
+                first_name=item.first_name,
+                last_name=item.last_name,
+                patronymic=item.patronymic,
+                cards=Users.card_map[i],
+            )
+            for i, item in enumerate(result)
+        ]
+    )
