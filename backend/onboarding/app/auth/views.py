@@ -22,9 +22,11 @@ class UserLogin(BaseModel):
     username: str
     password: str
 
+
 class UserPayload(BaseModel):
     username: str
     first_name: str
     last_name: str
     patronymic: str | None
+    score: int
     cards: list[str]

@@ -6,12 +6,25 @@ from onboarding.models import BaseModel, BaseDatetimeModel
 from onboarding.enums import TaskStatusEnum
 
 
-class Prize(BaseModel):
+class Prize(BaseDatetimeModel):
     __tablename__ = "prizes"
 
     title = Column(String, nullable=False)
+    description = Column(String, nullable=False)
     img_link = Column(String, nullable=True)
     cost = Column(Integer, nullable=False)
+
+    @classmethod
+    async def get_all(cls, session: AsyncSession):
+        stmt = select(cls)
+        result = (await session.execute(stmt)).scalars()
+        return result
+
+
+class UserPrize(BaseModel):
+    __tablename__ = 'user_prize'
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    prize_id = Column(Integer, ForeignKey("prizes.id"), nullable=False)
 
 
 class IndividualTask(BaseDatetimeModel):

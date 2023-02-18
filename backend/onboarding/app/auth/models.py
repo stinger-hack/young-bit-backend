@@ -18,6 +18,7 @@ class Users(BaseModel):
     hashed_password: Mapped[str] = Column(String, nullable=False)
     department_id = Column(Integer, ForeignKey("departments.id"), nullable=True)
     role: Mapped[str] = Column(String(15), nullable=False)
+    score = Column(Integer, default=0)
     img_link: Mapped[str] = Column(
         String, nullable=True, default="https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png"
     )
