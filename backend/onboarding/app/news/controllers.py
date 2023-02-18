@@ -42,7 +42,7 @@ async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSessi
 
     @event.listens_for(sync_maker, "before_commit")
     def before_commit(session):
-        last_commited_id = asyncio.run(ImportantUser.get_last_id())
+        last_commited_id = asyncio.run(ImportantUser.get_last_id(session=session))
         if last_commited_id > last_id:
             flag.set()
 
