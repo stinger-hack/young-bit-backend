@@ -113,8 +113,10 @@ class Important(BaseDatetimeModel):
     creator_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     @classmethod
-    async def insert_data(cls, title: str, main_text: str, creator_id: str):
-        ...
+    async def insert_data(cls, title: str, main_text: str, creator_id: str, session: AsyncSession):
+        stmt = insert(cls).values(title=title, main_text=main_text, creator_id=creator_id)
+        await session.execute(stmt)
+        await session.commit()
 
 
 class ImportantUser(BaseModel):

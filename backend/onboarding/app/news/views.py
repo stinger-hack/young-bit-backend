@@ -1,6 +1,7 @@
 from datetime import datetime
 from onboarding.protocol import BaseModel
 from onboarding.enums import NewsTypeEnum, UserRoleEnum
+from pydantic import validator
 
 
 class UserPayload(BaseModel):
@@ -64,7 +65,9 @@ class CreateImportantNews(BaseModel):
     user_id: int
     important_id: int
 
+
 class ImportantNewsView(BaseModel):
     id: int
     title: str
     main_text: str
+    created_at: str
