@@ -28,5 +28,6 @@ class UserPayload(BaseModel):
     first_name: str
     last_name: str
     patronymic: str | None
+    img_link: str
     score: int
     cards: list[str]
