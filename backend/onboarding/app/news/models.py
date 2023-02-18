@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship, joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 from onboarding.enums import NewsTypeEnum, ActionType
 
-from onboarding.models import BaseDatetimeModel
+from onboarding.models import BaseModel, BaseDatetimeModel
 
 
 class News(BaseDatetimeModel):
@@ -62,5 +62,34 @@ class Action(BaseDatetimeModel):
             .order_by(cls.created_at.desc())
             .options(joinedload(cls.user))
         )
+        result = (await session.execute(stmt)).scalars()
+        return result
+
+
+class Important(BaseDatetimeModel):
+    __tablename__ = "important_news"
+
+    title = Column(String(255), nullable=False)
+    main_text = Column(String, nullable=True)
+    creator_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+
+class ImportantUser(BaseModel):
+    __tablename__ = "important_users"
+
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    important_id = Column(Integer, ForeignKey("important_news.id"), nullable=False)
+    important = relationship("Important")
+
+    @classmethod
+    async def get_by_user_id(cls, user_id: int, session: AsyncSession, last_id: int | None = None):
+        stmt = (
+            select(cls)
+            .where(cls.user_id == user_id)
+            .order_by(cls.important_id.desc())
+            .options(joinedload(cls.important))
+        )
+        if last_id:
+            stmt = stmt.where(cls.important_id > last_id)
         result = (await session.execute(stmt)).scalars()
         return result

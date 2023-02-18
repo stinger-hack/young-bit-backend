@@ -1,7 +1,9 @@
+import asyncio
 import uuid
-from fastapi import APIRouter, Depends, WebSocket, UploadFile, File
+from fastapi import APIRouter, Depends, WebSocket, UploadFile, File, WebSocketDisconnect
+from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession
-from .models import Action, News
+from .models import Action, ImportantUser, News
 from .views import ApprovedNewsRequest, LikesView, NewsView, CommentsView
 from onboarding.auth.oauth2 import get_current_user
 from onboarding.config import settings
@@ -18,7 +20,47 @@ async def websocket_endpoint(websocket: WebSocket, user_id: int):
     await websocket.accept()
     while True:
         data = await websocket.receive_json()
-        await websocket.receive_json({"data": f"received {data}"})
+        await websocket.send_json({"data": f"received {data}"})
+
+
+async def get_new_important_news(websocket: WebSocket, user_id: int, last_id: int, session: AsyncSession):
+    while True:
+        result = await ImportantUser.get_by_user_id(
+            user_id=user_id, session=session, last_id=last_id
+        )  # get new messages
+        result_list = list(result)
+        if result_list:
+            await websocket.send_json(Response(body=result).dict())
+
+
+
+
+
+@router.websocket("/important/{user_id}")
+async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSession = Depends(get_session)):
+    flag = asyncio.Event()
+
+    @event.listens_for(ImportantUser.__table__, 'after_create')
+    def receive_after_create(target, connection, **kw):
+        flag.set()
+        print("event set")
+
+    # @event.listens_for(ImportantUser, "before_create")
+    # def do_measurement_stream(*args, **kwargs):
+    #     flag.set()
+    #     print("event set")
+
+    await websocket.accept()
+    result = await ImportantUser.get_by_user_id(user_id=user_id, session=session)  # get all important messages
+    result_list = [{'main_text': item.important.main_text} for item in result]
+    await websocket.send_json({'data': result_list})
+    while True:
+        try:
+            await flag.wait()
+            await websocket.send_json(result_list)
+            flag.clear()
+        except WebSocketDisconnect:
+            return None
 
 
 @router.post("/upload-image")

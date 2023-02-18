@@ -17,3 +17,8 @@ class UserRoleEnum(StrEnum):
     EMPLOYEE = "EMPLOYEE"
     HR = "HR"
     ADMIN = "ADMIN"
+
+
+class TaskTypeEnum(StrEnum):
+    INDIVIDUAL = "INDIVIDUAL"
+    DEPARTAMENT = "DEPARTAMENT"

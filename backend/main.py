@@ -7,6 +7,7 @@ import onboarding.app.auth.controllers as auth
 import onboarding.app.healthcheck.controllers as healthcheck
 import onboarding.app.news.controllers as news
 import onboarding.app.profile.controllers as profile
+import onboarding.app.tasks.controllers as tasks
 import onboarding.exceptions as exceptions
 
 from onboarding.config import settings
@@ -25,6 +26,7 @@ app.include_router(healthcheck.router, tags=["healthcheck"])
 app.include_router(auth.router, tags=["customers"], prefix="/api")
 app.include_router(news.router, tags=["news"], prefix="/api")
 app.include_router(profile.router, tags=["profile"], prefix="/api")
+app.include_router(tasks.router, tags=["tasks"], prefix="/api")
 
 
 @app.exception_handler(Exception)

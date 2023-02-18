@@ -1,5 +1,5 @@
 from passlib.context import CryptContext
-from sqlalchemy import Column, String, insert, select
+from sqlalchemy import Column, String, insert, select, Integer, ForeignKey
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped
 
@@ -16,6 +16,7 @@ class Users(BaseModel):
     patronymic: Mapped[str] = Column(String, nullable=True)
     username: Mapped[str] = Column(String, unique=False, index=True, nullable=False)
     hashed_password: Mapped[str] = Column(String, nullable=False)
+    department_id = Column(Integer, ForeignKey("departments.id"), nullable=True)
     role: Mapped[str] = Column(String(15), nullable=False)
     img_link: Mapped[str] = Column(
         String, nullable=True, default="https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png"
@@ -24,6 +25,12 @@ class Users(BaseModel):
     @staticmethod
     async def get_by_username(username: str, session: AsyncSession):
         stmt = select(Users).where(Users.username == username)
+        result = (await session.execute(stmt)).scalars().first()
+        return result
+
+    @staticmethod
+    async def get_by_id(user_id: int, session: AsyncSession):
+        stmt = select(Users).where(Users.id == user_id)
         result = (await session.execute(stmt)).scalars().first()
         return result
 
@@ -47,3 +54,11 @@ class Users(BaseModel):
         )
         await session.execute(stmt)
         await session.commit()
+
+
+class Department(BaseModel):
+    __tablename__ = "departments"
+
+    name = Column(String, nullable=False)
+    img_link: Mapped[str] = Column(String, nullable=True)
+    parent_id = Column(Integer, ForeignKey("departments.id"), nullable=True)
