@@ -1,3 +1,4 @@
+from itertools import groupby
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from onboarding.app.auth.models import Users
@@ -8,16 +9,26 @@ from onboarding.protocol import Response
 
 from .models import UserBook, Book
 
+
 router = APIRouter(dependencies=[Depends(get_current_user)])
+
 
 @router.get("/library")
 async def get_user_library(user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     result = await UserBook.get_book_by_user_id(user_id=user.id, session=session)
+    
+
     group_category = {}
     for item in result:
         group_category[item.book.category] = group_category.get(item.book.category, [])
         group_category[item.book.category].append(item.book)
-    return Response(body=group_category)
+
+    new_group_category = []
+
+    for key, value in group_category.items():
+        new_group_category.append({'category': key, 'cards': value})
+    
+    return Response(body=new_group_category)
 
 
 @router.post("/admin/library")
