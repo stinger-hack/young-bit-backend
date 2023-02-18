@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from onboarding.app.auth.models import Users
-from .views import TaskView, TaskPayload
+from .views import CreateDepartmentTask, CreateIndividualTask, TaskView, TaskPayload
 from .models import DepartmentTask, IndividualTask
 from onboarding.auth.oauth2 import get_current_user
 from onboarding.db import get_session
@@ -26,3 +26,29 @@ async def get_news(
     return Response(
         body=TaskView(tasks_count=18, tasks_finished=12, tasks=[TaskPayload.from_orm(item) for item in result])
     )
+
+
+@router.post("/tasks/department", response_model=Response)
+async def create_department_task(body: CreateDepartmentTask, session: AsyncSession = Depends(get_session)):
+    await DepartmentTask.insert_data(
+        title=body.title,
+        description=body.description,
+        img_link=body.img_link,
+        cost=body.cost,
+        department_id=body.department_id,
+        session=session,
+    )
+    return Response()
+
+
+@router.post("/tasks/individual", response_model=Response)
+async def create_individual_task(body: CreateIndividualTask, session: AsyncSession = Depends(get_session)):
+    await IndividualTask.insert_data(
+        title=body.title,
+        description=body.description,
+        img_link=body.img_link,
+        cost=body.cost,
+        user_id=body.user_id,
+        session=session,
+    )
+    return Response()

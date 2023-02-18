@@ -56,3 +56,13 @@ async def register_user(
         session=session,
     )
     return Response()
+
+
+@router.get("/employees")
+async def get_employees(session: AsyncSession = Depends(get_session)):
+    ...
+
+
+@router.get("/departments")
+async def get_employees(session: AsyncSession = Depends(get_session)):
+    ...
