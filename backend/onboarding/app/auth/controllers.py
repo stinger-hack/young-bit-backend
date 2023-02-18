@@ -69,6 +69,7 @@ async def get_employees(session: AsyncSession = Depends(get_session)):
                 last_name=item.last_name,
                 patronymic=item.patronymic,
                 img_link=item.img_link,
+                role=item.role,
                 score=item.score,
                 cards=Users.card_map[i],
             )
@@ -94,6 +95,7 @@ async def get_department_users(department_id: int, session: AsyncSession = Depen
                 last_name=item.last_name,
                 patronymic=item.patronymic,
                 img_link=item.img_link,
+                role=item.role,
                 score=item.score,
                 cards=Users.card_map[i],
             )
