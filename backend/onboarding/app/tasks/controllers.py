@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from onboarding.app.auth.models import Users
 from .views import CreateDepartmentTask, CreateIndividualTask, TaskView, TaskPayload
-from .models import DepartmentTask, IndividualTask
+from .models import DepartmentTask, IndividualTask, Prize
 from onboarding.auth.oauth2 import get_current_user
 from onboarding.db import get_session
 from onboarding.protocol import Response
@@ -52,3 +52,9 @@ async def create_individual_task(body: CreateIndividualTask, session: AsyncSessi
         session=session,
     )
     return Response()
+
+
+@router.get("/shop")
+async def get_shop_prizes(session: AsyncSession = Depends(get_session)):
+    result = await Prize.get_all(session=session)
+    return Response(body=list(result))

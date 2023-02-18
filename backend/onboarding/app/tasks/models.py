@@ -1,9 +1,12 @@
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, ForeignKey, select, insert, update, DateTime
+from sqlalchemy.orm import joinedload, relationship, Mapped
 from sqlalchemy.ext.asyncio import AsyncSession
+from onboarding.app.auth.models import Users
 
 from onboarding.models import BaseModel, BaseDatetimeModel
 from onboarding.enums import TaskStatusEnum
+from onboarding.protocol import Response
 
 
 class Prize(BaseDatetimeModel):
@@ -22,9 +25,27 @@ class Prize(BaseDatetimeModel):
 
 
 class UserPrize(BaseModel):
-    __tablename__ = 'user_prize'
+    __tablename__ = "user_prize"
+
+    prize: Mapped[Prize] = relationship("Prize")
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     prize_id = Column(Integer, ForeignKey("prizes.id"), nullable=False)
+
+    @classmethod
+    async def buy_prize(cls, user_id: int, prize_id: int, session: AsyncSession):
+        prize = await session.get(Prize, prize_id)
+        user = await session.get(Users, user_id)
+        if user.score < prize.cost:
+            return Response(code=400, message="Не хватает денег")
+
+        stmt = update(Users).values(score=Users.score - prize.cost)
+        stmt = insert()
+
+    @classmethod
+    async def get_user_prizes(cls, user_id: int, session: AsyncSession):
+        stmt = select(cls).where(user_id == user_id).options(joinedload(cls.prize))
+        result = (await session.execute(stmt)).scalars()
+        return result
 
 
 class IndividualTask(BaseDatetimeModel):
