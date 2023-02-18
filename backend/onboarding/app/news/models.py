@@ -29,7 +29,7 @@ class News(BaseDatetimeModel):
 
     @classmethod
     async def create_initiative(
-        cls, title: str, main_text: str, image_url: str, user_id: int, news_type: NewsTypeEnum, session: AsyncSession
+        cls, title: str, main_text: str, image_url: str, user_id: int, session: AsyncSession
     ):
         await cls.insert_data(
             title=title,

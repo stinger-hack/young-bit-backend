@@ -67,7 +67,7 @@ async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_
 
 
 @router.post("/initiative", response_model=Response[list[NewsView]])
-async def get_news(body: CreateInitiativeRequest, session: AsyncSession = Depends(get_session)):
+async def create_initiative(body: CreateInitiativeRequest, session: AsyncSession = Depends(get_session)):
     await News.create_initiative(
         title=body.title,
         main_text=body.main_text,
