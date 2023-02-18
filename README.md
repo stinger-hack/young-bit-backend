@@ -23,6 +23,12 @@
 * гибкие цели на неделю
 * **стикеры в телеграме**
 
+## Демо
+
+* http://stingerhack.space/ - версия для работника
+* https://stingerhack-admin.web.app - версия для HR
+* http://stingerhack.space:8000/api/docs - API
+
 ## Запуск проекта
 
 Все части проекта можно запустить из докера

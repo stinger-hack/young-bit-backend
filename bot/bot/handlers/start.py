@@ -18,13 +18,17 @@ class Form(StatesGroup):
     goal = State()
     faq = State()
     sticker_gift = State()
-    random_launch = State()
+    random_lunch = State()
     important = State()
     testing = State()
 
 
 class Sos(StatesGroup):
     situation = State()
+
+
+class NetworkLunch(StatesGroup):
+    start = State()
 
 
 @router.message(commands=["start"])
@@ -34,11 +38,21 @@ async def start_handler(msg: Message):
 
 @router.message(F.text == "Нетворкинг ланч")
 async def process_name(message: Message, state: FSMContext) -> None:
-    await state.set_state(Sos.situation)
+    await state.set_state(NetworkLunch.start)
     await message.answer(
-        "Хотели бы вы принять участие в нетв",
-        reply_markup=ReplyKeyboardRemove(),
+        "Нетворкинг ланч - это обед со случайным сотрудником. Хотели бы вы принять участие?",
+        reply_markup=kb.yes_no_kb,
     )
+
+
+@router.message(NetworkLunch.start)
+async def start_lunch(message: Message, state: FSMContext):
+    await state.set_state(Form.menu)
+    if message.text.lower() == "нет":
+        await message.answer(
+            "Очень жаль :(",
+            reply_markup=kb.menu_kb,
+        )
 
 
 @router.message(F.text == "Тестирование")
