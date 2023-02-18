@@ -53,7 +53,7 @@ async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSessi
     await websocket.accept()
     result = await ImportantUser.get_by_user_id(user_id=user_id, session=session)  # get all important messages
     result_list = [{"main_text": item.important.main_text} for item in result]
-    last_id = max()
+    # last_id = max()
     await websocket.send_json({"data": result_list})
     while True:
         try:
