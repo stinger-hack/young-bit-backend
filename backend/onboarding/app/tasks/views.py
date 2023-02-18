@@ -6,6 +6,7 @@ class TaskPayload(BaseModel):
     title: str
     description: str
     spent_time: int | None
+    img_link: str | None
     cost: int | None
     created_at: datetime
     updated_at: datetime | None

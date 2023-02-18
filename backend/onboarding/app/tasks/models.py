@@ -18,6 +18,7 @@ class IndividualTask(BaseDatetimeModel):
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
     spent_time = Column(Integer, nullable=True)
+    img_link = Column(String, nullable=True)
     cost = Column(Integer, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
@@ -34,6 +35,7 @@ class DepartmentTask(BaseDatetimeModel):
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
     spent_time = Column(Integer, nullable=True)
+    img_link = Column(String, nullable=True)
     cost = Column(Integer, nullable=True)
     department_id = Column(Integer, ForeignKey("departments.id"), nullable=False)
 
