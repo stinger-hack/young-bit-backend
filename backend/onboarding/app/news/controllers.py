@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, WebSocket, UploadFile, File, WebSocketDi
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession
 from .models import Action, ImportantUser, News
-from .views import ApprovedNewsRequest, LikesView, NewsView, CommentsView
+from .views import ApprovedNewsRequest, CreateInitiativeRequest, LikesView, NewsView, CommentsView, CreateNewsRequest
 from onboarding.auth.oauth2 import get_current_user
 from onboarding.config import settings
 from onboarding.db import get_session
@@ -23,24 +23,11 @@ async def websocket_endpoint(websocket: WebSocket, user_id: int):
         await websocket.send_json({"data": f"received {data}"})
 
 
-async def get_new_important_news(websocket: WebSocket, user_id: int, last_id: int, session: AsyncSession):
-    while True:
-        result = await ImportantUser.get_by_user_id(
-            user_id=user_id, session=session, last_id=last_id
-        )  # get new messages
-        result_list = list(result)
-        if result_list:
-            await websocket.send_json(Response(body=result).dict())
-
-
-
-
-
 @router.websocket("/important/{user_id}")
 async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSession = Depends(get_session)):
     flag = asyncio.Event()
 
-    @event.listens_for(ImportantUser.__table__, 'after_create')
+    @event.listens_for(ImportantUser.__table__, "after_create")
     def receive_after_create(target, connection, **kw):
         flag.set()
         print("event set")
@@ -52,8 +39,8 @@ async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSessi
 
     await websocket.accept()
     result = await ImportantUser.get_by_user_id(user_id=user_id, session=session)  # get all important messages
-    result_list = [{'main_text': item.important.main_text} for item in result]
-    await websocket.send_json({'data': result_list})
+    result_list = [{"main_text": item.important.main_text} for item in result]
+    await websocket.send_json({"data": result_list})
     while True:
         try:
             await flag.wait()
@@ -75,8 +62,20 @@ async def upload_image(file: UploadFile = File(...)):
 
 @router.get("/news", response_model=Response[list[NewsView]])
 async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_session)):
-    result = await News.get_news(news_type=news_type, session=session)
+    result = await News.get_user_news(news_type=news_type, session=session)
     return Response(body=[NewsView.from_orm(item) for item in result])
+
+
+@router.post("/initiative", response_model=Response[list[NewsView]])
+async def get_news(body: CreateInitiativeRequest, session: AsyncSession = Depends(get_session)):
+    await News.create_initiative(
+        title=body.title,
+        main_text=body.main_text,
+        image_url=body.image_url,
+        user_id=body.user_id,
+        session=session,
+    )
+    return Response()
 
 
 @router.get("/comments/{news_id}")
@@ -89,6 +88,25 @@ async def get_comments(news_id: int, session: AsyncSession = Depends(get_session
 async def get_likes(news_id: int, session: AsyncSession = Depends(get_session)):
     result = await Action.get_actions(ActionType.LIKE, news_id=news_id, session=session)
     return Response(body=[LikesView.from_orm(item) for item in result])
+
+
+@router.get("/admin/news", response_model=Response[list[NewsView]])
+async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_session)):
+    result = await News.get_admin_news(news_type=news_type, session=session)
+    return Response(body=[NewsView.from_orm(item) for item in result])
+
+
+@router.post("/admin/news", response_model=Response[list[NewsView]])
+async def get_news(body: CreateNewsRequest, session: AsyncSession = Depends(get_session)):
+    await News.insert_data(
+        title=body.title,
+        main_text=body.main_text,
+        image_url=body.image_url,
+        user_id=body.user_id,
+        news_type=body.news_type,
+        session=session,
+    )
+    return Response()
 
 
 @router.post("/admin/news/approve_news")

@@ -19,7 +19,7 @@ class NewsView(BaseModel):
     created_at: datetime | str
     updated_at: datetime | str | None
     main_text: str
-    image_url: str
+    image_url: str | None
     user: UserPayload
 
 
@@ -41,3 +41,14 @@ class LikesView(BaseModel):
 class ApprovedNewsRequest(BaseModel):
     news_id: int
     is_approved: bool
+
+
+class CreateInitiativeRequest(BaseModel):
+    title: str
+    main_text: str
+    image_url: str
+    user_id: int
+
+
+class CreateNewsRequest(CreateInitiativeRequest):
+    news_type: NewsTypeEnum

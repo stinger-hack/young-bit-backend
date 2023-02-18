@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, select, and_, update
+from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, select, and_, update, insert
 from sqlalchemy.orm import relationship, joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 from onboarding.enums import NewsTypeEnum, ActionType
@@ -18,7 +18,46 @@ class News(BaseDatetimeModel):
     is_approved = Column(Boolean, nullable=True)  # None == not checked, False == not pass, True == pass
 
     @classmethod
-    async def get_news(cls, news_type: NewsTypeEnum, session: AsyncSession):
+    async def insert_data(
+        cls, title: str, main_text: str, image_url: str, user_id: int, news_type: NewsTypeEnum, session: AsyncSession
+    ):
+        stmt = insert(cls).values(
+            title=title, main_text=main_text, image_url=image_url, user_id=user_id, news_type=news_type
+        )
+        await session.execute(stmt)
+        await session.commit()
+
+    @classmethod
+    async def create_initiative(
+        cls, title: str, main_text: str, image_url: str, user_id: int, news_type: NewsTypeEnum, session: AsyncSession
+    ):
+        await cls.insert_data(
+            title=title,
+            main_text=main_text,
+            image_url=image_url,
+            user_id=user_id,
+            news_type=NewsTypeEnum.INITIATIVE,
+            session=session,
+        )
+
+    @classmethod
+    async def get_admin_news(cls, news_type: NewsTypeEnum, session: AsyncSession):
+        stmt = (
+            select(cls)
+            .where(
+                and_(
+                    cls.news_type == news_type,
+                    cls.is_approved == None,
+                )
+            )
+            .order_by(cls.created_at.desc())
+            .options(joinedload(cls.user))
+        )
+        result = (await session.execute(stmt)).scalars()
+        return result
+
+    @classmethod
+    async def get_user_news(cls, news_type: NewsTypeEnum, session: AsyncSession):
         stmt = (
             select(cls)
             .where(

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 
 from onboarding.app.auth.models import *  # noqa
-from onboarding.app.games.models import *  # noqa
+from onboarding.app.library.models import *  # noqa
 from onboarding.app.news.models import *  # noqa
 from onboarding.app.profile.models import *  # noqa
 from onboarding.app.tasks.models import *  # noqa
