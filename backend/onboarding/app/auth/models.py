@@ -32,7 +32,7 @@ class Users(BaseModel):
 
     card_map = {
         0: [
-            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
+            "https://storage.yandexcloud.net/onboarding/488df6a3d84147f98f75d594533dd277.png",
             "https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png",
             "https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png",
             "https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png",
