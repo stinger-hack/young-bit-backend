@@ -22,15 +22,44 @@ class Users(BaseModel):
         String, nullable=True, default="https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png"
     )
 
+    # 1: https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png
+    # 2: https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png
+    # 3: https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png
+    # 4: https://storage.yandexcloud.net/onboarding/d83c70f0d948417f9fcf2e23ead1f6d1.png
+    # 5: https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png
+    # 6: https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png
+
     card_map = {
-        0: [1, 2, 5, 6],
-        1: [3, 5, 8],
-        2: [
-            8,
+        0: [
+            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
+            "https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png",
+            "https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png",
+            "https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png",
         ],
-        3: [1, 6],
-        4: [1, 2, 3, 4, 5, 6],
-        5: [4, 7],
+        1: [
+            "https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png",
+            "https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png",
+            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
+        ],
+        2: [
+            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
+        ],
+        3: [
+            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
+            "https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png",
+        ],
+        4: [
+            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
+            "https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png",
+            "https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png",
+            "https://storage.yandexcloud.net/onboarding/d83c70f0d948417f9fcf2e23ead1f6d1.png",
+            "https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png",
+            "https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png",
+        ],
+        5: [
+            "https://storage.yandexcloud.net/onboarding/d83c70f0d948417f9fcf2e23ead1f6d1.png",
+            "https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png",
+        ],
     }
 
     @classmethod

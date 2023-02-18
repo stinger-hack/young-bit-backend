@@ -27,4 +27,4 @@ class UserPayload(BaseModel):
     first_name: str
     last_name: str
     patronymic: str | None
-    cards: list[int]
+    cards: list[str]
