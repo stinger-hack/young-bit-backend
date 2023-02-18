@@ -8,6 +8,7 @@ class TaskPayload(BaseModel):
     spent_time: int | None
     img_link: str | None
     cost: int | None
+    progress: int
     created_at: datetime
     updated_at: datetime | None
 
