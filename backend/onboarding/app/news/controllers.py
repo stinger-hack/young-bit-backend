@@ -3,8 +3,16 @@ import uuid
 from fastapi import APIRouter, Depends, WebSocket, UploadFile, File, WebSocketDisconnect
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession
-from .models import Action, ImportantUser, News
-from .views import ApprovedNewsRequest, CreateInitiativeRequest, LikesView, NewsView, CommentsView, CreateNewsRequest
+from .models import Action, Important, ImportantUser, News
+from .views import (
+    ApprovedNewsRequest,
+    CreateImportantNews,
+    CreateInitiativeRequest,
+    LikesView,
+    NewsView,
+    CommentsView,
+    CreateNewsRequest,
+)
 from onboarding.auth.oauth2 import get_current_user
 from onboarding.config import settings
 from onboarding.db import get_session
@@ -12,7 +20,15 @@ from onboarding.enums import ActionType, NewsTypeEnum
 from onboarding.storage.s3 import S3Service
 from onboarding.protocol import Response
 
+from onboarding.db import sync_maker
+
 router = APIRouter(dependencies=[Depends(get_current_user)])
+
+
+# @event.listens_for(ImportantUser, "after_insert")
+# def do_measurement_stream(*args, **kwargs):
+#     flag.set()
+#     print("event set")
 
 
 @router.websocket("/sos/{user_id}")
@@ -26,20 +42,18 @@ async def websocket_endpoint(websocket: WebSocket, user_id: int):
 @router.websocket("/important/{user_id}")
 async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSession = Depends(get_session)):
     flag = asyncio.Event()
+    last_id = None
 
-    @event.listens_for(ImportantUser.__table__, "after_create")
-    def receive_after_create(target, connection, **kw):
+    @event.listens_for(sync_maker, "before_commit")
+    def before_commit(session):
         flag.set()
-        print("event set")
+        print("before commit")
 
-    # @event.listens_for(ImportantUser, "before_create")
-    # def do_measurement_stream(*args, **kwargs):
-    #     flag.set()
-    #     print("event set")
 
     await websocket.accept()
     result = await ImportantUser.get_by_user_id(user_id=user_id, session=session)  # get all important messages
     result_list = [{"main_text": item.important.main_text} for item in result]
+    last_id = max()
     await websocket.send_json({"data": result_list})
     while True:
         try:
@@ -48,6 +62,13 @@ async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSessi
             flag.clear()
         except WebSocketDisconnect:
             return None
+
+
+@router.post("/admin/important")
+async def create_important_news(body: CreateImportantNews, session: AsyncSession = Depends(get_session)):
+    await ImportantUser.insert_data(user_id=body.user_id, important_id=body.important_id, session=session)
+    await session.commit()
+    return Response()
 
 
 @router.post("/upload-image")

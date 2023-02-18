@@ -58,3 +58,8 @@ class CreateInitiativeRequest(BaseModel):
 
 class CreateNewsRequest(CreateInitiativeRequest):
     news_type: NewsTypeEnum
+
+
+class CreateImportantNews(BaseModel):
+    user_id: int
+    important_id: int

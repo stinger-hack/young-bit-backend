@@ -9,7 +9,7 @@ from onboarding.auth.hash import get_password_hash, verify_password  # isort:ski
 from onboarding.auth.jwt_token import create_access_token  # isort:skip
 from onboarding.db import get_session  # isort:skip
 from onboarding.exceptions import UnauthorizedError  # isort:skip
-from onboarding.app.auth.models import Users  # isort:skip
+from onboarding.app.auth.models import Department, Users  # isort:skip
 from onboarding.enums import UserRoleEnum
 
 router = APIRouter()
@@ -60,9 +60,15 @@ async def register_user(
 
 @router.get("/employees")
 async def get_employees(session: AsyncSession = Depends(get_session)):
-    ...
+    Users
 
 
 @router.get("/departments")
-async def get_employees(session: AsyncSession = Depends(get_session)):
-    ...
+async def get_departments(session: AsyncSession = Depends(get_session)):
+    Department
+
+
+@router.get("/users/{department_id}")
+async def get_department_users(department_id: int, session: AsyncSession = Depends(get_session)):
+    result = Users.get_by_department_id(department_id=department_id, session=session)
+    return Response

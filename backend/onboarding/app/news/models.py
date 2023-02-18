@@ -112,6 +112,10 @@ class Important(BaseDatetimeModel):
     main_text = Column(String, nullable=True)
     creator_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
+    @classmethod
+    async def insert_data(cls, title: str, main_text: str, creator_id: str):
+        ...
+
 
 class ImportantUser(BaseModel):
     __tablename__ = "important_users"
@@ -119,6 +123,11 @@ class ImportantUser(BaseModel):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     important_id = Column(Integer, ForeignKey("important_news.id"), nullable=False)
     important = relationship("Important")
+
+    @classmethod
+    async def insert_data(cls, user_id: int, important_id: int, session: AsyncSession):
+        stmt = insert(cls).values(user_id=user_id, important_id=important_id)
+        await session.execute(stmt)
 
     @classmethod
     async def get_by_user_id(cls, user_id: int, session: AsyncSession, last_id: int | None = None):

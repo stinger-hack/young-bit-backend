@@ -11,6 +11,7 @@ class Book(BaseDatetimeModel):
 
     name = Column(String, nullable=False)
     category = Column(String, nullable=False)
+    description = Column(String, nullable=False)
     img_link = Column(String, nullable=False)
     progress = Column(Integer, nullable=False, default=0)
 

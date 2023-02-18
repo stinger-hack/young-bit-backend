@@ -22,6 +22,12 @@ class Users(BaseModel):
         String, nullable=True, default="https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png"
     )
 
+    @classmethod
+    async def get_by_department_id(cls, department_id: int, session: AsyncSession):
+        stmt = select(cls).where(department_id == department_id)
+        result = (await session.execute(stmt)).scalars()
+        return result
+
     @staticmethod
     async def get_by_username(username: str, session: AsyncSession):
         stmt = select(Users).where(Users.username == username)

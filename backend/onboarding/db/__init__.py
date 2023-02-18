@@ -8,6 +8,8 @@ from onboarding.app.tasks.models import *  # noqa
 
 from .base import Base, engine
 
+sync_maker = sessionmaker()
+
 
 async def init_db():
     async with engine.begin() as conn:
@@ -16,6 +18,6 @@ async def init_db():
 
 
 async def get_session() -> AsyncSession:
-    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async_session = sessionmaker(engine, sync_session_class=sync_maker, class_=AsyncSession, expire_on_commit=False)
     async with async_session() as session:
         yield session
