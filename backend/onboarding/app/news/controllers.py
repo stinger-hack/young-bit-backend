@@ -8,6 +8,7 @@ from .views import (
     ApprovedNewsRequest,
     CreateImportantNews,
     CreateInitiativeRequest,
+    ImportantNewsView,
     LikesView,
     NewsView,
     CommentsView,
@@ -41,14 +42,14 @@ async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSessi
 
     @event.listens_for(sync_maker, "before_commit")
     def before_commit(session):
-        last_id = asyncio.run(ImportantUser.get_last_id())
-        flag.set()
-        print("before commit")
+        last_commited_id = asyncio.run(ImportantUser.get_last_id())
+        if last_commited_id > last_id:
+            flag.set()
 
     await websocket.accept()
     result = await ImportantUser.get_by_user_id(user_id=user_id, session=session)  # get all important messages
-    result_list = [{"main_text": item.important.main_text} for item in result]
-    last_id = max(result_list, key=lambda x: x.important.id)
+    result_list = [ImportantNewsView.from_orm(item.important).dict() for item in result]
+    last_id = max(result_list, key=lambda x: x['id'])
     await websocket.send_json({"data": result_list})
     while True:
         try:

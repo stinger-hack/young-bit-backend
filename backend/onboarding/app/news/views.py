@@ -63,3 +63,8 @@ class CreateNewsRequest(CreateInitiativeRequest):
 class CreateImportantNews(BaseModel):
     user_id: int
     important_id: int
+
+class ImportantNewsView(BaseModel):
+    id: int
+    title: str
+    main_text: str
