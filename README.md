@@ -23,11 +23,27 @@
 * гибкие цели на неделю
 * **стикеры в телеграме**
 
+## Стек
+
+### Frontend
+
+* React
+* Typescript
+* Vite
+* Docker, Docker-compose
+
+### Backend
+
+* Python, FastAPI
+* PostgreSQL, SQLAlchemy
+* Websockets
+* Docker, Docker-compose
+
 ## Демо
 
-* http://stingerhack.space/ - версия для работника
-* https://stingerhack-admin.web.app - версия для HR
-* http://stingerhack.space:8000/api/docs - API
+* <http://stingerhack.space/> - версия для работника
+* <https://stingerhack-admin.web.app> - версия для HR
+* <http://stingerhack.space:8000/api/docs> - API
 
 ## Запуск проекта
 
