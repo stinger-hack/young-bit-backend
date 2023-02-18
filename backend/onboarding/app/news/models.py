@@ -125,6 +125,12 @@ class ImportantUser(BaseModel):
     important = relationship("Important")
 
     @classmethod
+    async def get_last_id(cls, session: AsyncSession):
+        stmt = select(max(cls.id))
+        result = await session.execute(stmt).scalars()
+        return result
+
+    @classmethod
     async def insert_data(cls, user_id: int, important_id: int, session: AsyncSession):
         stmt = insert(cls).values(user_id=user_id, important_id=important_id)
         await session.execute(stmt)

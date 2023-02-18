@@ -21,14 +21,9 @@ from onboarding.storage.s3 import S3Service
 from onboarding.protocol import Response
 
 from onboarding.db import sync_maker
+from operator import attrgetter
 
 router = APIRouter(dependencies=[Depends(get_current_user)])
-
-
-# @event.listens_for(ImportantUser, "after_insert")
-# def do_measurement_stream(*args, **kwargs):
-#     flag.set()
-#     print("event set")
 
 
 @router.websocket("/sos/{user_id}")
@@ -46,14 +41,14 @@ async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSessi
 
     @event.listens_for(sync_maker, "before_commit")
     def before_commit(session):
+        last_id = asyncio.run(ImportantUser.get_last_id())
         flag.set()
         print("before commit")
-
 
     await websocket.accept()
     result = await ImportantUser.get_by_user_id(user_id=user_id, session=session)  # get all important messages
     result_list = [{"main_text": item.important.main_text} for item in result]
-    # last_id = max()
+    last_id = max(result_list, key=lambda x: x.important.id)
     await websocket.send_json({"data": result_list})
     while True:
         try:
