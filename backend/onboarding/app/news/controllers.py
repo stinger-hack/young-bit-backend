@@ -3,6 +3,8 @@ import uuid
 from fastapi import APIRouter, Depends, WebSocket, UploadFile, File, WebSocketDisconnect
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from onboarding.app.auth.models import Users
 from .models import Action, Important, ImportantUser, News
 from .views import (
     ApprovedNewsRequest,
@@ -92,12 +94,14 @@ async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_
 
 
 @router.post("/initiative", response_model=Response[list[NewsView]])
-async def create_initiative(body: CreateInitiativeRequest, session: AsyncSession = Depends(get_session)):
+async def create_initiative(body: CreateInitiativeRequest, user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     await News.create_initiative(
         title=body.title,
         main_text=body.main_text,
         image_url=body.image_url,
-        user_id=body.user_id,
+        tags=body.tags,
+        user_id=user.id,
+        is_anonymous=body.is_anonymous,
         session=session,
     )
     return Response()
@@ -122,12 +126,12 @@ async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_
 
 
 @router.post("/admin/news", response_model=Response[list[NewsView]])
-async def get_news(body: CreateNewsRequest, session: AsyncSession = Depends(get_session)):
+async def get_news(body: CreateNewsRequest, user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     await News.insert_data(
         title=body.title,
         main_text=body.main_text,
         image_url=body.image_url,
-        user_id=body.user_id,
+        user_id=user.id,
         news_type=body.news_type,
         session=session,
     )

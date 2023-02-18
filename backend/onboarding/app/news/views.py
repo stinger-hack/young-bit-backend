@@ -54,7 +54,8 @@ class CreateInitiativeRequest(BaseModel):
     title: str
     main_text: str
     image_url: str | None
-    user_id: int | None
+    tags: str = '#НовостьДня'
+    is_anonymous: bool = False
 
 
 class CreateNewsRequest(CreateInitiativeRequest):

@@ -15,27 +15,29 @@ class News(BaseDatetimeModel):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     user = relationship("Users")
     news_type = Column(String(10), nullable=False)  # formal or informal news
+    tags = Column(String)
     is_approved = Column(Boolean, nullable=True)  # None == not checked, False == not pass, True == pass
 
     @classmethod
     async def insert_data(
-        cls, title: str, main_text: str, image_url: str, user_id: int, news_type: NewsTypeEnum, session: AsyncSession
+        cls, title: str, main_text: str, image_url: str, user_id: int, tags: str, news_type: NewsTypeEnum, session: AsyncSession
     ):
         stmt = insert(cls).values(
-            title=title, main_text=main_text, image_url=image_url, user_id=user_id, news_type=news_type
+            title=title, main_text=main_text, image_url=image_url, user_id=user_id, news_type=news_type, tags=tags,
         )
         await session.execute(stmt)
         await session.commit()
 
     @classmethod
     async def create_initiative(
-        cls, title: str, main_text: str, image_url: str | None, user_id: int, session: AsyncSession
+        cls, title: str, main_text: str, image_url: str | None, user_id: int, is_anonymous: bool, tags: str, session: AsyncSession
     ):
         await cls.insert_data(
             title=title,
             main_text=main_text,
             image_url=image_url,
-            user_id=user_id,
+            user_id=None if is_anonymous else user_id,
+            tags=tags,
             news_type=NewsTypeEnum.INITIATIVE,
             session=session,
         )
