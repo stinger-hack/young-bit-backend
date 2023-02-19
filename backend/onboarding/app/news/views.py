@@ -53,7 +53,7 @@ class ApprovedNewsRequest(BaseModel):
 class CreateInitiativeRequest(BaseModel):
     title: str = "title"
     main_text: str
-    image_url: str | None
+    img_link: str | None
     tags: str = '#НовостьДня'
     is_anonymous: bool = False
 

@@ -98,7 +98,7 @@ async def create_initiative(body: CreateInitiativeRequest, user: Users = Depends
     await News.create_initiative(
         title=body.title,
         main_text=body.main_text,
-        image_url=body.image_url,
+        image_url=body.img_link,
         tags=body.tags,
         user_id=user.id,
         is_anonymous=body.is_anonymous,
@@ -130,7 +130,7 @@ async def get_news(body: CreateNewsRequest, user: Users = Depends(get_current_us
     await News.insert_data(
         title=body.title,
         main_text=body.main_text,
-        image_url=body.image_url,
+        image_url=body.img_link,
         user_id=user.id,
         news_type=body.news_type,
         session=session,
