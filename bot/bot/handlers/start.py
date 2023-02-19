@@ -1,5 +1,6 @@
 from aiogram import Router
 import bot.keyboards as kb
+from bot.requests.common import get_random_user
 
 router = Router()
 
@@ -10,6 +11,7 @@ from aiogram.types import (
 )
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
+from bot.app import bot
 
 
 class Form(StatesGroup):
@@ -31,6 +33,7 @@ class NetworkLunch(StatesGroup):
     start = State()
     choose = State()
 
+
 @router.message(commands=["start"])
 async def start_handler(msg: Message):
     await msg.reply(f"Привет, {msg.from_user.first_name}", reply_markup=kb.menu_kb)
@@ -45,21 +48,28 @@ async def process_name(message: Message, state: FSMContext) -> None:
     )
 
 
-
 @router.message(NetworkLunch.start)
 async def start_lunch(message: Message, state: FSMContext):
-    await state.set_state(Form.menu)
     if message.text.lower() == "нет":
+        await state.set_state(Form.menu)
         await message.answer(
             "Очень жаль :(",
             reply_markup=kb.menu_kb,
         )
     else:
-        ...
+        await state.set_state(NetworkLunch.choose)
+        result = await get_random_user()
+        await bot.send_photo(
+            chat_id=message.chat.id,
+            photo=result["img_link"],
+            caption=f"Ваш собеседник на сегодня: {result['fullname']}",
+            reply_markup=kb.menu_kb,
+        )
+
 
 @router.message(NetworkLunch.choose)
 async def choose_network(message: Message, state: FSMContext):
-    aw
+    ...
 
 
 @router.message(F.text == "Тестирование")
