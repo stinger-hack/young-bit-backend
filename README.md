@@ -60,6 +60,8 @@ docker-compose up --build -d
 
 РАЗРАБОТЧИКИ
 
-Павел Ивин Backend @pavivin
-Семен Колесников Frontend @dragonite24
-Дык Фам Frontend @TagidickTagidick
+Павел Ивин Backend [@pavivin](https://t.me/pavivin)
+
+Семен Колесников Frontend [@dragonite24](https://t.me/dragonite24)
+
+Дык Фам Frontend @[TagidickTagidick](https://t.me/TagidickTagidick)
