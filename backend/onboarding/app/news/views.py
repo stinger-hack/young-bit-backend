@@ -51,7 +51,7 @@ class ApprovedNewsRequest(BaseModel):
 
 
 class CreateInitiativeRequest(BaseModel):
-    title: str
+    title: str = "title"
     main_text: str
     image_url: str | None
     tags: str = '#НовостьДня'
