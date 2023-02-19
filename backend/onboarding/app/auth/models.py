@@ -1,7 +1,9 @@
+from typing import Self
 from passlib.context import CryptContext
 from sqlalchemy import Column, String, insert, select, Integer, ForeignKey
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped
+from sqlalchemy import func
 
 from onboarding.models import BaseModel
 
@@ -62,6 +64,20 @@ class Users(BaseModel):
             "https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png",
         ],
     }
+
+    theme_map = {
+        1: "Спорт",
+        2: "Игры",
+        3: "Корейские сериалы",
+        4: "IT",
+        5: "Квантовая физика",
+    }
+
+    @classmethod
+    async def get_random_user(cls, session: AsyncSession) -> Self:
+        stmt = select(cls).order_by(func.random())
+        result = (await session.execute(stmt)).scalars().first()
+        return result
 
     @classmethod
     async def get_all(cls, session: AsyncSession):

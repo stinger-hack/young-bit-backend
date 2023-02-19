@@ -70,6 +70,21 @@ async def dashboard_data(websocket: WebSocket, user_id: int, session: AsyncSessi
             return None
 
 
+@router.get("/important")
+async def get_important_news(user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    result = await ImportantUser.get_by_user_id(user_id=user.id, session=session)  # get all important messages
+    result_list = [
+        ImportantNewsView(
+            id=item.important.id,
+            title=item.important.title,
+            main_text=item.important.main_text,
+            created_at=item.important.created_at.isoformat(),
+        ).dict()
+        for item in result
+    ]
+    return Response(body=result_list)
+
+
 @router.post("/admin/important")
 async def create_important_news(body: CreateImportantNews, session: AsyncSession = Depends(get_session)):
     await ImportantUser.insert_data(user_id=body.user_id, important_id=body.important_id, session=session)
@@ -94,7 +109,9 @@ async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_
 
 
 @router.post("/initiative", response_model=Response[list[NewsView]])
-async def create_initiative(body: CreateInitiativeRequest, user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+async def create_initiative(
+    body: CreateInitiativeRequest, user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)
+):
     await News.create_initiative(
         title=body.title,
         main_text=body.main_text,
@@ -126,7 +143,9 @@ async def get_news(news_type: NewsTypeEnum, session: AsyncSession = Depends(get_
 
 
 @router.post("/admin/news", response_model=Response[list[NewsView]])
-async def get_news(body: CreateNewsRequest, user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+async def get_news(
+    body: CreateNewsRequest, user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)
+):
     await News.insert_data(
         title=body.title,
         main_text=body.main_text,

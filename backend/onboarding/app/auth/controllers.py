@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from onboarding.protocol import Response
 
-from .views import Token, TokenData, UserPayload
+from .views import LunchUserView, Token, TokenData, UserPayload
 from onboarding.auth.hash import get_password_hash, verify_password  # isort:skip
 from onboarding.auth.jwt_token import create_access_token  # isort:skip
 from onboarding.db import get_session  # isort:skip
@@ -102,3 +102,8 @@ async def get_department_users(department_id: int, session: AsyncSession = Depen
             for i, item in enumerate(result)
         ]
     )
+
+@router.get("/lunch-networking")
+async def get_lunch_user(session: AsyncSession = Depends(get_session)):
+    user = Users.get_random_user(session=session)
+    return Response(body=LunchUserView(fullname=user.first_name))

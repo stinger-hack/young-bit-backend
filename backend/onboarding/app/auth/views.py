@@ -32,3 +32,9 @@ class UserPayload(BaseModel):
     role: str
     score: int
     cards: list[str]
+
+
+class LunchUserView(BaseModel):
+    fullname: str
+    img_link: str
+    theme: str
