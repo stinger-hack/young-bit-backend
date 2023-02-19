@@ -29,7 +29,7 @@ class Sos(StatesGroup):
 
 class NetworkLunch(StatesGroup):
     start = State()
-
+    choose = State()
 
 @router.message(commands=["start"])
 async def start_handler(msg: Message):
@@ -45,6 +45,7 @@ async def process_name(message: Message, state: FSMContext) -> None:
     )
 
 
+
 @router.message(NetworkLunch.start)
 async def start_lunch(message: Message, state: FSMContext):
     await state.set_state(Form.menu)
@@ -53,6 +54,12 @@ async def start_lunch(message: Message, state: FSMContext):
             "Очень жаль :(",
             reply_markup=kb.menu_kb,
         )
+    else:
+        ...
+
+@router.message(NetworkLunch.choose)
+async def choose_network(message: Message, state: FSMContext):
+    aw
 
 
 @router.message(F.text == "Тестирование")
