@@ -27,7 +27,7 @@
 
 ### Frontend
 
-* React
+* React, SASS
 * Typescript
 * Vite
 * Docker, Docker-compose
