@@ -25,43 +25,43 @@ class Users(BaseModel):
         String, nullable=True, default="https://storage.yandexcloud.net/onboarding/ffd38812bdf14692b59bb89d1023ffa4.png"
     )
 
-    # 1: https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png
-    # 2: https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png
+    # 1: https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png
+    # 2: https://storage.yandexcloud.net/onboarding/0c0405f124a94088a9f4fe8c4636c7aa.png
     # 3: https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png
-    # 4: https://storage.yandexcloud.net/onboarding/d83c70f0d948417f9fcf2e23ead1f6d1.png
-    # 5: https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png
-    # 6: https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png
+    # 4: https://storage.yandexcloud.net/onboarding/7e885ca6825948f289a01668edabe0ab.png
+    # 5: https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png
+    # 6: https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png
 
     card_map = {
         0: [
-            "https://storage.yandexcloud.net/onboarding/488df6a3d84147f98f75d594533dd277.png",
-            "https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png",
-            "https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png",
-            "https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png",
+            "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
+            "https://storage.yandexcloud.net/onboarding/0c0405f124a94088a9f4fe8c4636c7aa.png",
+            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
+            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
         ],
         1: [
             "https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png",
-            "https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png",
-            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
+            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
+            "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
         ],
         2: [
-            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
+            "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
         ],
         3: [
-            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
-            "https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png",
+            "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
+            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
         ],
         4: [
-            "https://storage.yandexcloud.net/onboarding/f0a33aea1f9c4c78aa815085a7e43a37.png",
-            "https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png",
+            "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
+            "https://storage.yandexcloud.net/onboarding/0c0405f124a94088a9f4fe8c4636c7aa.png",
             "https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png",
-            "https://storage.yandexcloud.net/onboarding/d83c70f0d948417f9fcf2e23ead1f6d1.png",
-            "https://storage.yandexcloud.net/onboarding/a611efc7a2f44c9cb8243b30a37b56ad.png",
-            "https://storage.yandexcloud.net/onboarding/1837703c9f92462c85b0955d0f2fbf1d.png",
+            "https://storage.yandexcloud.net/onboarding/7e885ca6825948f289a01668edabe0ab.png",
+            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
+            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
         ],
         5: [
-            "https://storage.yandexcloud.net/onboarding/d83c70f0d948417f9fcf2e23ead1f6d1.png",
-            "https://storage.yandexcloud.net/onboarding/e1e135b2e9e54ab5b0f67a826dada9c8.png",
+            "https://storage.yandexcloud.net/onboarding/7e885ca6825948f289a01668edabe0ab.png",
+            "https://storage.yandexcloud.net/onboarding/0c0405f124a94088a9f4fe8c4636c7aa.png",
         ],
     }
 
