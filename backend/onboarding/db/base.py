@@ -8,7 +8,7 @@ engine = create_async_engine(
     echo=True,
     future=True,
     isolation_level="AUTOCOMMIT",
-    pool_size=5,
+    pool_size=50,
     max_overflow=10,
     pool_timeout=30,
 )
