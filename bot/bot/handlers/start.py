@@ -135,7 +135,7 @@ async def sticker_gift(message: Message, state: FSMContext) -> None:
     result = await get_user_by_fullname(first_name=first_name, last_name=last_name)
     if not result:
         await state.set_state(Form.menu)
-        await message.answer(
+        return await message.answer(
             "Человек не найден",
             reply_markup=kb.menu_kb,
         )
