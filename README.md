@@ -64,4 +64,4 @@ docker-compose up --build -d
 
 Семен Колесников Frontend [@dragonite24](https://t.me/dragonite24)
 
-Дык Фам Frontend @[TagidickTagidick](https://t.me/TagidickTagidick)
+Дык Фам Frontend [@TagidickTagidick](https://t.me/TagidickTagidick)
