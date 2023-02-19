@@ -1,7 +1,7 @@
 from itertools import groupby
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from onboarding.app.auth.models import Users
+# from onboarding.app.auth.models import Users
 from onboarding.app.library.views import CreateBookRequest
 from onboarding.auth.oauth2 import get_current_user
 from onboarding.db import get_session
@@ -14,7 +14,7 @@ router = APIRouter(dependencies=[Depends(get_current_user)])
 
 
 @router.get("/library")
-async def get_user_library(user: Users = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+async def get_user_library(user = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     result = await UserBook.get_book_by_user_id(user_id=user.id, session=session)
     
 

@@ -9,7 +9,7 @@ from onboarding.auth.hash import get_password_hash, verify_password  # isort:ski
 from onboarding.auth.jwt_token import create_access_token  # isort:skip
 from onboarding.db import get_session  # isort:skip
 from onboarding.exceptions import UnauthorizedError  # isort:skip
-from onboarding.app.auth.models import Department, Users  # isort:skip
+from .models import Department, Users  # isort:skip
 from onboarding.enums import UserRoleEnum
 
 router = APIRouter()
@@ -103,7 +103,22 @@ async def get_department_users(department_id: int, session: AsyncSession = Depen
         ]
     )
 
+
 @router.get("/lunch-networking")
 async def get_lunch_user(session: AsyncSession = Depends(get_session)):
-    user = Users.get_random_user(session=session)
-    return Response(body=LunchUserView(fullname=user.first_name))
+    user = await Users.get_random_user(user_id=1, session=session)
+    return Response(
+        body=LunchUserView(
+            fullname=user.first_name + " " + user.last_name,
+            img_link=user.img_link,
+            theme=user.theme_map[user.id],
+        )
+    )
+
+
+@router.get("/find-user")
+async def search_user(first_name: str, last_name: str | None = None, session: AsyncSession = Depends(get_session)):
+    result = await Users.get_by_fullname(first_name=first_name, last_name=last_name, session=session)
+    if not result:
+        return Response()
+    return Response(body=UserPayload.from_orm(result))

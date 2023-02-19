@@ -31,7 +31,7 @@ class UserPayload(BaseModel):
     img_link: str
     role: str
     score: int
-    cards: list[str]
+    cards: list[str] = []
 
 
 class LunchUserView(BaseModel):

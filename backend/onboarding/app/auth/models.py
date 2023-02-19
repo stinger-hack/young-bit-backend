@@ -74,8 +74,8 @@ class Users(BaseModel):
     }
 
     @classmethod
-    async def get_random_user(cls, session: AsyncSession) -> Self:
-        stmt = select(cls).order_by(func.random())
+    async def get_random_user(cls, user_id: int, session: AsyncSession):
+        stmt = select(cls).where(cls.id != user_id).order_by(func.random())
         result = (await session.execute(stmt)).scalars().first()
         return result
 
@@ -94,6 +94,15 @@ class Users(BaseModel):
     @staticmethod
     async def get_by_username(username: str, session: AsyncSession):
         stmt = select(Users).where(Users.username == username)
+        result = (await session.execute(stmt)).scalars().first()
+        return result
+
+    @staticmethod
+    async def get_by_fullname(first_name: str, last_name: str | None, session: AsyncSession):
+        stmt = select(Users).where(Users.first_name == first_name)
+        if last_name:
+            stmt = stmt.where(Users.last_name == last_name)
+
         result = (await session.execute(stmt)).scalars().first()
         return result
 
