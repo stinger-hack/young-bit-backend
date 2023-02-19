@@ -27,7 +27,7 @@ class Users(BaseModel):
 
     # 1: https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png
     # 2: https://storage.yandexcloud.net/onboarding/0c0405f124a94088a9f4fe8c4636c7aa.png
-    # 3: https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png
+    # 3: https://storage.yandexcloud.net/onboarding/e8d5c01b5ceb439b8ab97e81448cd62a.png
     # 4: https://storage.yandexcloud.net/onboarding/7e885ca6825948f289a01668edabe0ab.png
     # 5: https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png
     # 6: https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png
@@ -37,15 +37,20 @@ class Users(BaseModel):
             "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
             "https://storage.yandexcloud.net/onboarding/0c0405f124a94088a9f4fe8c4636c7aa.png",
             "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
-            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
+            "https://storage.yandexcloud.net/onboarding/e8d5c01b5ceb439b8ab97e81448cd62a.png",
         ],
         1: [
-            "https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png",
+            "https://storage.yandexcloud.net/onboarding/e8d5c01b5ceb439b8ab97e81448cd62a.png",
             "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
             "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
         ],
         2: [
-            "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
+            "https://storage.yandexcloud.net/onboarding/c07074c8ba124a3da803113ddbb60918.png",
+            "https://storage.yandexcloud.net/onboarding/0c0405f124a94088a9f4fe8c4636c7aa.png",
+            "https://storage.yandexcloud.net/onboarding/e8d5c01b5ceb439b8ab97e81448cd62a.png",
+            "https://storage.yandexcloud.net/onboarding/7e885ca6825948f289a01668edabe0ab.png",
+            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
+            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
         ],
         3: [
             "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
@@ -53,11 +58,6 @@ class Users(BaseModel):
         ],
         4: [
             "https://storage.yandexcloud.net/onboarding/4fdc37de68954f129c8a3f989e83e487.png",
-            "https://storage.yandexcloud.net/onboarding/0c0405f124a94088a9f4fe8c4636c7aa.png",
-            "https://storage.yandexcloud.net/onboarding/8d370b1dc48a441aab05205a71185663.png",
-            "https://storage.yandexcloud.net/onboarding/7e885ca6825948f289a01668edabe0ab.png",
-            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
-            "https://storage.yandexcloud.net/onboarding/afbe8de88bac43e283585a09a8664aba.png",
         ],
         5: [
             "https://storage.yandexcloud.net/onboarding/7e885ca6825948f289a01668edabe0ab.png",
