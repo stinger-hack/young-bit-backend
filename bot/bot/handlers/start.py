@@ -127,7 +127,7 @@ async def sticker_gift(message: Message, state: FSMContext) -> None:
     split_str = message.text.split(" ")
     if len(split_str) != 2:
         await state.set_state(Form.menu)
-        await message.answer(
+        return await message.answer(
             "Человек не найден",
             reply_markup=kb.menu_kb,
         )
